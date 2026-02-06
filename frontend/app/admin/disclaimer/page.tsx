@@ -6,18 +6,10 @@ import dynamic from 'next/dynamic'
 import '../admin.css'
 
 // Dynamically import ReactQuill to avoid SSR issues
-const ReactQuill = dynamic(
-  async () => {
-    const { default: RQ } = await import('react-quill')
-    // Import styles
-    await import('react-quill/dist/quill.snow.css')
-    return RQ
-  },
-  { 
-    ssr: false,
-    loading: () => <p>Loading editor...</p>
-  }
-)
+const ReactQuill = dynamic(() => import('react-quill'), { 
+  ssr: false,
+  loading: () => <p>Loading editor...</p>
+})
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8001/api'
 
