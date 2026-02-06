@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import theme from './theme'
 
 export const metadata: Metadata = {
-  title: 'House of Hair - Book Your Appointment',
-  description: 'Professional hair salon booking system',
+  title: `${theme.client.name} - Book Your Session`,
+  description: 'Wellness session booking system',
 }
 
 export default function RootLayout({
@@ -13,7 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <head>
+        <link rel="stylesheet" href={theme.typography.fontUrl} />
+      </head>
+      <body style={{ fontFamily: theme.typography.fontFamily }}>{children}</body>
     </html>
   )
 }

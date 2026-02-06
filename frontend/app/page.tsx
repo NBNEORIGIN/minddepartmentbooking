@@ -150,15 +150,15 @@ export default function CompactBookingPage() {
     return (
       <div className="booking-container">
         <div className="success-message">
-          <h2>✓ Booking Confirmed!</h2>
-          <p>Your appointment has been successfully booked.</p>
+          <h2>✓ Session Confirmed!</h2>
+          <p>Your wellness session has been successfully booked.</p>
           <p><strong>Service:</strong> {selectedService?.name}</p>
           <p><strong>Stylist:</strong> {selectedStaff?.name}</p>
           <p><strong>Date:</strong> {selectedDate && format(selectedDate, 'EEEE, MMMM d, yyyy')}</p>
           <p><strong>Time:</strong> {selectedTime}</p>
           <p><strong>Total:</strong> £{selectedService?.price}</p>
           <button className="submit-button" onClick={() => window.location.reload()}>
-            Book Another Appointment
+            Book Another Session
           </button>
         </div>
       </div>
@@ -168,9 +168,9 @@ export default function CompactBookingPage() {
   return (
     <div className="booking-container">
       <div className="booking-header">
-        <img src="/logo.png" alt="House of Hair" style={{ height: '80px', marginBottom: '10px' }} />
-        <h1>House of Hair</h1>
-        <p>Professional Hair Salon - Book Your Appointment</p>
+        <img src="/logo.png" alt="The Mind Department" style={{ height: '80px', marginBottom: '10px' }} />
+        <h1>The Mind Department</h1>
+        <p>Wellness Sessions - Book Your Experience</p>
       </div>
 
       {error && (
@@ -183,7 +183,7 @@ export default function CompactBookingPage() {
       <div className="booking-grid">
         {/* Service Selection */}
         <div className="booking-section">
-          <h2>1. Choose Service</h2>
+          <h2>1. Choose Session Type</h2>
           <div className="compact-service-grid">
             {services.map((service) => (
               <div
@@ -202,7 +202,7 @@ export default function CompactBookingPage() {
 
         {/* Staff Selection */}
         <div className="booking-section">
-          <h2>2. Choose Stylist</h2>
+          <h2>2. Choose Facilitator</h2>
           <div className="staff-grid">
             {staff.map((member) => (
               <div

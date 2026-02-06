@@ -1,28 +1,38 @@
-/* Compact Booking Page Styles */
+/* Compact Booking Page Styles - The Mind Department */
+:root {
+  --color-background: #8D9889;
+  --color-background-alt: #EEE8E5;
+  --color-text: #27382E;
+  --color-primary: #8D9889;
+  --color-secondary: #EEE8E5;
+  --color-accent: #27382E;
+}
+
 .booking-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: 'RoxboroughCF', serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto;
 }
 
 .booking-header {
   text-align: center;
   margin-bottom: 30px;
   padding: 20px;
-  background: linear-gradient(135deg, #f5f5dc 0%, #e8e8d0 100%);
+  background: linear-gradient(135deg, var(--color-background) 0%, var(--color-background-alt) 100%);
   border-radius: 12px;
 }
 
 .booking-header h1 {
   margin: 0;
   font-size: 2rem;
-  color: #000;
+  color: var(--color-text);
 }
 
 .booking-header p {
   margin: 5px 0 0 0;
-  color: #666;
+  color: var(--color-text);
+  opacity: 0.8;
 }
 
 .booking-grid {
@@ -69,13 +79,13 @@
 }
 
 .compact-service-card:hover {
-  border-color: #8B6F47;
+  border-color: var(--color-primary);
   transform: translateY(-2px);
 }
 
 .compact-service-card.selected {
-  border-color: #8B6F47;
-  background: #f5f5dc;
+  border-color: var(--color-primary);
+  background: var(--color-background-alt);
 }
 
 .compact-service-card h3 {
@@ -86,7 +96,7 @@
 
 .compact-service-card .price {
   font-weight: bold;
-  color: #8B6F47;
+  color: var(--color-accent);
   font-size: 1.1rem;
 }
 
@@ -112,13 +122,13 @@
 }
 
 .staff-card:hover {
-  border-color: #8B6F47;
+  border-color: var(--color-primary);
   transform: translateY(-2px);
 }
 
 .staff-card.selected {
-  border-color: #8B6F47;
-  background: #f5f5dc;
+  border-color: var(--color-primary);
+  background: var(--color-background-alt);
 }
 
 .staff-photo {
@@ -127,14 +137,14 @@
   border-radius: 50%;
   object-fit: cover;
   margin-right: 12px;
-  border: 2px solid #8B6F47;
+  border: 2px solid var(--color-primary);
 }
 
 .staff-photo-placeholder {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #8B6F47 0%, #a0856b 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-background) 100%);
   margin-right: 12px;
   display: flex;
   align-items: center;
@@ -174,12 +184,12 @@
 }
 
 .date-button:hover {
-  border-color: #8B6F47;
+  border-color: var(--color-primary);
 }
 
 .date-button.selected {
-  border-color: #8B6F47;
-  background: #f5f5dc;
+  border-color: var(--color-primary);
+  background: var(--color-background-alt);
   font-weight: bold;
 }
 
@@ -203,12 +213,12 @@
 }
 
 .time-slot:hover {
-  border-color: #8B6F47;
+  border-color: var(--color-primary);
 }
 
 .time-slot.selected {
-  border-color: #8B6F47;
-  background: #f5f5dc;
+  border-color: var(--color-primary);
+  background: var(--color-background-alt);
   font-weight: bold;
 }
 
@@ -241,7 +251,7 @@
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #8B6F47;
+  border-color: var(--color-primary);
 }
 
 .checkbox-group {
@@ -263,7 +273,7 @@
 }
 
 .booking-summary {
-  background: #f5f5dc;
+  background: var(--color-background-alt);
   padding: 20px;
   border-radius: 12px;
   margin-top: 20px;
@@ -286,13 +296,13 @@
   border-bottom: none;
   font-weight: bold;
   font-size: 1.1rem;
-  color: #8B6F47;
+  color: var(--color-accent);
 }
 
 .submit-button {
   width: 100%;
   padding: 15px;
-  background: #000;
+  background: var(--color-accent);
   color: white;
   border: none;
   border-radius: 8px;
@@ -304,7 +314,7 @@
 }
 
 .submit-button:hover {
-  background: #333;
+  background: var(--color-text);
   transform: translateY(-2px);
 }
 
