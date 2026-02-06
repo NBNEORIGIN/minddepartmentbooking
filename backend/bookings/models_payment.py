@@ -4,7 +4,6 @@ Supports class packages and credit tracking
 """
 from django.db import models
 from django.core.validators import MinValueValidator
-from .models import Client
 
 
 class ClassPackage(models.Model):
@@ -49,7 +48,7 @@ class ClientCredit(models.Model):
     """
     Track client's remaining class credits from purchased packages
     """
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='credits')
+    client = models.ForeignKey('bookings.Client', on_delete=models.CASCADE, related_name='credits')
     package = models.ForeignKey(
         ClassPackage,
         on_delete=models.PROTECT,
@@ -148,7 +147,7 @@ class PaymentTransaction(models.Model):
         ('refunded', 'Refunded'),
     ]
     
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='transactions')
+    client = models.ForeignKey('bookings.Client', on_delete=models.CASCADE, related_name='transactions')
     transaction_type = models.CharField(max_length=20, choices=TRANSACTION_TYPE_CHOICES)
     status = models.CharField(max_length=20, choices=TRANSACTION_STATUS_CHOICES, default='pending')
     
