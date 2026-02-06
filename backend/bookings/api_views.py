@@ -82,6 +82,20 @@ class BookingViewSet(viewsets.ModelViewSet):
                 from datetime import timedelta
                 end_datetime = start_datetime + timedelta(minutes=service.duration_minutes)
                 
+                # Check for overlapping bookings with this staff member
+                overlapping_bookings = Booking.objects.filter(
+                    staff=staff,
+                    status__in=['pending', 'confirmed'],
+                    start_time__lt=end_datetime,
+                    end_time__gt=start_datetime
+                )
+                
+                if overlapping_bookings.exists():
+                    return Response(
+                        {'error': 'This time slot is no longer available. Please select a different time.'},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+                
                 # Create booking
                 booking = Booking.objects.create(
                     client=client,
