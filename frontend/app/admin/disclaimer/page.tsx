@@ -39,7 +39,7 @@ export default function DisclaimerManagement() {
     try {
       const [disclaimerRes, profilesRes] = await Promise.all([
         fetch(`${API_BASE}/intake-disclaimer/active/`),
-        fetch(`${API_BASE}/intake-profiles/`)
+        fetch(`${API_BASE}/intake/`)
       ])
       
       if (disclaimerRes.ok) {
@@ -90,7 +90,7 @@ export default function DisclaimerManagement() {
     }
 
     try {
-      const response = await fetch(`${API_BASE}/intake-profiles/expire-all/`, {
+      const response = await fetch(`${API_BASE}/intake/expire-all/`, {
         method: 'POST'
       })
 
@@ -111,7 +111,7 @@ export default function DisclaimerManagement() {
     }
 
     try {
-      const response = await fetch(`${API_BASE}/intake-profiles/${profileId}/expire/`, {
+      const response = await fetch(`${API_BASE}/intake/${profileId}/expire/`, {
         method: 'POST'
       })
 

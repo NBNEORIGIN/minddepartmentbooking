@@ -155,7 +155,7 @@ export default function CompactBookingPage() {
     try {
       // Check if customer has completed intake form
       console.log('Checking intake form status for:', customerEmail)
-      const intakeCheckRes = await fetch(`${API_BASE}/intake-profiles/status/?email=${encodeURIComponent(customerEmail)}`)
+      const intakeCheckRes = await fetch(`${API_BASE}/intake/status/?email=${encodeURIComponent(customerEmail)}`)
       
       console.log('Intake check response status:', intakeCheckRes.status)
       
