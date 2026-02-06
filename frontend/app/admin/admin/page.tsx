@@ -250,7 +250,7 @@ export default function AdminDashboard() {
       </div>
 
       <div className="admin-footer">
-        <p>67 Bondgate Within, Alnwick, NE66 1HZ</p>
+        <p>The Mind Department</p>
       </div>
 
       {viewingBooking && (
