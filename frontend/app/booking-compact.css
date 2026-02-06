@@ -297,6 +297,20 @@
   font-weight: bold;
 }
 
+.time-slot.disabled {
+  background: #f0f0f0;
+  color: #999;
+  border-color: #ddd;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.time-slot.disabled:hover {
+  background: #f0f0f0;
+  transform: none;
+  border-color: #ddd;
+}
+
 .customer-form {
   display: grid;
   gap: 12px;
