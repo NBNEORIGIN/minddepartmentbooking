@@ -1,5 +1,5 @@
 'use client'
-// House of Hair Admin Dashboard
+// The Mind Department Admin Dashboard
 import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
 import Link from 'next/link'
@@ -105,8 +105,8 @@ export default function AdminDashboard() {
     <div className="admin-container">
       <div className="admin-header">
         <div className="header-content">
-          <img src="/logo.png" alt="House of Hair" className="admin-logo" />
-          <h1>House of Hair Management</h1>
+          <img src="/mind-department-logo.webp" alt="The Mind Department" className="admin-logo" />
+          <h1>The Mind Department Management</h1>
         </div>
         <a href="/" className="view-site-btn">View Public Site</a>
       </div>
