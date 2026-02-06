@@ -167,7 +167,7 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
 EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='toby@nbnesigns.com')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='toby@nbnesigns.com')
-EMAIL_SUBJECT_PREFIX = '[House of Hair] '
+EMAIL_SUBJECT_PREFIX = '[The Mind Department] '
 EMAIL_TIMEOUT = 5  # 5 second timeout
 
 # Resend HTTP API (Railway blocks SMTP, Resend is free)

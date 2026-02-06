@@ -150,14 +150,13 @@ Reference: #{booking.id}
 If you need to cancel or reschedule, please contact us.
 
 Thank you,
-House of Hair
-67 Bondgate Within, Alnwick, NE66 1HZ"""
+The Mind Department"""
                             
                             # Use configured from address (must be from verified domain)
                             from_email = getattr(settings, 'RESEND_FROM_EMAIL', 'onboarding@resend.dev')
                             
                             params = {
-                                "from": f"House of Hair <{from_email}>",
+                                "from": f"The Mind Department <{from_email}>",
                                 "to": [client.email],
                                 "subject": subject,
                                 "text": message
