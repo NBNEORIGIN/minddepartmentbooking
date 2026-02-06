@@ -45,6 +45,33 @@ export default function AdminDashboard() {
     }
   }
 
+  const handleCancelBooking = async (bookingId: number) => {
+    if (!confirm('Are you sure you want to cancel this booking? The time slot will become available for other clients.')) {
+      return
+    }
+
+    try {
+      const response = await fetch(`${API_BASE}/bookings/${bookingId}/`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: 'cancelled' }),
+      })
+
+      if (response.ok) {
+        alert('Booking cancelled successfully. The time slot is now available.')
+        fetchBookings()
+        setViewingBooking(null)
+      } else {
+        alert('Failed to cancel booking')
+      }
+    } catch (error) {
+      console.error('Error cancelling booking:', error)
+      alert('Error cancelling booking')
+    }
+  }
+
   const filteredBookings = bookings.filter(booking => {
     const matchesFilter = filter === 'all' || booking.status === filter
     const matchesSearch = 
@@ -236,12 +263,23 @@ export default function AdminDashboard() {
                       </td>
                       <td>£{booking.price}</td>
                       <td>
-                        <button 
-                          className="action-btn"
-                          onClick={() => setViewingBooking(booking)}
-                        >
-                          View
-                        </button>
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                          <button 
+                            className="action-btn"
+                            onClick={() => setViewingBooking(booking)}
+                          >
+                            View
+                          </button>
+                          {(booking.status === 'confirmed' || booking.status === 'pending') && (
+                            <button 
+                              className="action-btn cancel-btn"
+                              onClick={() => handleCancelBooking(booking.id)}
+                              style={{ background: '#dc3545' }}
+                            >
+                              Cancel
+                            </button>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))
