@@ -42,6 +42,8 @@ export default function CompactBookingPage() {
   
   const [bookingComplete, setBookingComplete] = useState(false)
   const [currentMonth, setCurrentMonth] = useState(new Date())
+  const [availableSlots, setAvailableSlots] = useState<string[]>([])
+  const [loadingSlots, setLoadingSlots] = useState(false)
 
   useEffect(() => {
     fetchData()
@@ -94,6 +96,42 @@ export default function CompactBookingPage() {
     }
     return slots
   }
+
+  const fetchAvailableSlots = async () => {
+    if (!selectedService || !selectedStaff || !selectedDate) {
+      setAvailableSlots([])
+      return
+    }
+
+    setLoadingSlots(true)
+    try {
+      const dateStr = format(selectedDate, 'yyyy-MM-dd')
+      const response = await fetch(
+        `${API_BASE}/bookings/slots/?service_id=${selectedService.id}&staff_id=${selectedStaff.id}&date=${dateStr}`
+      )
+      
+      if (response.ok) {
+        const data = await response.json()
+        // Extract just the start times in HH:mm format
+        const times = data.slots.map((slot: any) => {
+          const startTime = new Date(slot.start_time)
+          return format(startTime, 'HH:mm')
+        })
+        setAvailableSlots(times)
+      } else {
+        setAvailableSlots([])
+      }
+    } catch (err) {
+      console.error('Failed to fetch available slots:', err)
+      setAvailableSlots([])
+    } finally {
+      setLoadingSlots(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchAvailableSlots()
+  }, [selectedService, selectedStaff, selectedDate])
 
   const getDaysInMonth = (date: Date) => {
     const year = date.getFullYear()
@@ -335,17 +373,26 @@ export default function CompactBookingPage() {
         {/* Time Selection */}
         <div className="booking-section">
           <h2>4. Choose Time</h2>
-          <div className="time-slots">
-            {generateTimeSlots().map((time) => (
-              <button
-                key={time}
-                className={`time-slot ${selectedTime === time ? 'selected' : ''}`}
-                onClick={() => setSelectedTime(time)}
-              >
-                {time}
-              </button>
-            ))}
-          </div>
+          {loadingSlots ? (
+            <p>Loading available times...</p>
+          ) : (
+            <div className="time-slots">
+              {generateTimeSlots().map((time) => {
+                const isAvailable = availableSlots.includes(time)
+                const isDisabled = !!(selectedService && selectedStaff && selectedDate && !isAvailable)
+                return (
+                  <button
+                    key={time}
+                    className={`time-slot ${selectedTime === time ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
+                    onClick={() => isAvailable && setSelectedTime(time)}
+                    disabled={isDisabled}
+                  >
+                    {time}
+                  </button>
+                )
+              })}
+            </div>
+          )}
         </div>
       </div>
 

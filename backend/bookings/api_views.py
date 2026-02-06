@@ -298,4 +298,3 @@ class SessionViewSet(viewsets.ModelViewSet):
         session.enrolled_clients.add(client)
         serializer = self.get_serializer(session)
         return Response(serializer.data)
-
