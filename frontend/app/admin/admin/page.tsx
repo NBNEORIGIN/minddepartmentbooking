@@ -125,6 +125,9 @@ export default function AdminDashboard() {
           <Link href="/admin/clients" style={{ background: '#8B6F47', color: 'white', padding: '12px 24px', borderRadius: '8px', textDecoration: 'none', fontWeight: '500' }}>
             Client Database
           </Link>
+          <Link href="/admin/disclaimer" style={{ background: '#2196F3', color: 'white', padding: '12px 24px', borderRadius: '8px', textDecoration: 'none', fontWeight: '500' }}>
+            Disclaimer & Intake Forms
+          </Link>
           <button 
             onClick={exportToCSV}
             style={{ background: '#4CAF50', color: 'white', padding: '12px 24px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: '500' }}

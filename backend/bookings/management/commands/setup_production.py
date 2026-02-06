@@ -39,10 +39,36 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(f'✓ {"Created" if created else "Found"} staff: {staff.name}'))
 
         # Create Disclaimer
+        disclaimer_content = """<h2>The Mind Department - Health & Wellness Consent and Liability Waiver</h2>
+
+<h3>Introduction</h3>
+<p>Welcome to The Mind Department ("the Practice"). Our wellness services (including mindfulness sessions, meditation, and wellness coaching) are designed to help you make healthier lifestyle choices to enhance your physical and mental well-being.</p>
+
+<h3>Not Medical Advice</h3>
+<p>I understand that The Mind Department is not a licensed medical care provider. The services provided are not a substitute for professional medical advice, diagnosis, or treatment. I agree that I should not discontinue or avoid any medical treatment recommended by my physician or other licensed healthcare provider.</p>
+
+<h3>Assumption of Risk</h3>
+<p>I understand that participating in wellness services may involve physical exertion, stretching, or other activities that carry inherent risks, such as fatigue, muscle soreness, or, in rare cases, injury. I voluntarily assume full responsibility for any risks, injuries, or damages, known or unknown, which I might incur as a result of participating in the services.</p>
+
+<h3>Health Conditions</h3>
+<p>I confirm that I am in good medical condition/health and am sufficiently fit to participate in the services. It is my responsibility to inform The Mind Department immediately of any pre-existing conditions, including pregnancy or the presence of a pacemaker, that may be affected by the services.</p>
+
+<h3>Release of Liability</h3>
+<p>I hereby for myself, my heirs, executors, or assigns, waive and release The Mind Department, its employees, agents, and representatives from any and all claims, demands, or causes of action for injuries, damages, or losses that I may incur arising from my participation in the services, to the fullest extent permitted by law.</p>
+
+<h3>Confidentiality</h3>
+<p>The Mind Department will keep all personal information and records confidential, unless I consent in writing to share this information with others or if disclosure is required by law.</p>
+
+<h3>Cancellation Policy</h3>
+<p>I understand that a 24-hour notice is required to cancel or reschedule appointments. Failure to do so may result in a charge for the full cost of the session.</p>
+
+<h3>Acknowledgment</h3>
+<p>I have read and fully understand the above statements. By completing this intake form and checking the consent boxes below, I am acknowledging that I understand and agree to these terms.</p>"""
+        
         disclaimer, created = IntakeWellbeingDisclaimer.objects.get_or_create(
             version='1.0',
             defaults={
-                'content': 'This is a wellbeing service. By proceeding, you confirm you are booking for personal development and wellness purposes.',
+                'content': disclaimer_content,
                 'active': True
             }
         )
