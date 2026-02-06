@@ -159,9 +159,18 @@ export default function DisclaimerManagement() {
             <>
               <div style={{ background: '#f5f5f5', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
                 <strong>Version:</strong> {disclaimer?.version}<br />
-                <strong>Content:</strong><br />
-                <div style={{ marginTop: '10px', whiteSpace: 'pre-wrap' }}>{disclaimer?.content}</div>
+                <strong>Raw HTML:</strong><br />
+                <div style={{ marginTop: '10px', whiteSpace: 'pre-wrap', fontSize: '0.9em', color: '#666' }}>{disclaimer?.content}</div>
               </div>
+              
+              <div style={{ background: 'white', padding: '30px', borderRadius: '8px', marginBottom: '20px', border: '2px solid #8B6F47' }}>
+                <h3 style={{ marginTop: 0, color: '#8B6F47' }}>Customer Preview</h3>
+                <p style={{ color: '#666', fontSize: '0.9em', marginBottom: '20px' }}>This is how customers will see the disclaimer on the intake form:</p>
+                <div style={{ border: '1px solid #ddd', padding: '20px', borderRadius: '8px', background: '#fafafa' }}>
+                  <div dangerouslySetInnerHTML={{ __html: disclaimer?.content || '' }} />
+                </div>
+              </div>
+              
               <button 
                 onClick={() => setEditing(true)}
                 style={{ background: '#8B6F47', color: 'white', padding: '12px 24px', borderRadius: '8px', border: 'none', cursor: 'pointer' }}
