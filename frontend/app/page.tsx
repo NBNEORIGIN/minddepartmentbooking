@@ -195,8 +195,9 @@ export default function CompactBookingPage() {
   return (
     <div className="booking-container">
       <div className="booking-header">
+        <img src="/mind-department-logo.webp" alt="The Mind Department" className="booking-logo" style={{maxWidth: '200px', marginBottom: '10px'}} />
         <h1>The Mind Department</h1>
-        <p>Wellness Sessions - Book Your Experience</p>
+        <p className="subtitle">Wellness Sessions - Book Your Experience</p>
       </div>
 
       {error && (
