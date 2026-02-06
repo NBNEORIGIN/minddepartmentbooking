@@ -5,7 +5,13 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'booking_platform.settings')
 django.setup()
 
 from bookings.models import Service, Staff, IntakeWellbeingDisclaimer, ClassPackage
+from django.contrib.auth.models import User
 from decimal import Decimal
+
+# Create superuser if it doesn't exist
+if not User.objects.filter(username='admin').exists():
+    User.objects.create_superuser('admin', 'aly@theminddepartment.com', 'admin123')
+    print("✓ Superuser created: admin")
 
 # Create Service
 service, created = Service.objects.get_or_create(

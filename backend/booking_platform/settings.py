@@ -156,10 +156,7 @@ CORS_ALLOW_HEADERS = ['*']
 CORS_ALLOW_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']
 
 # CSRF trusted origins for admin
-CSRF_TRUSTED_ORIGINS = [
-    'https://house-of-hair-booking-production.up.railway.app',
-    'https://house-of-hair-booking.vercel.app',
-]
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='').split(',') if config('CSRF_TRUSTED_ORIGINS', default='') else []
 
 # Email configuration
 EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
