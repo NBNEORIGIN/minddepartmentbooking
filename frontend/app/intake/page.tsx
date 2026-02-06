@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import '../booking-compact.css'
 import './intake.css'
@@ -26,7 +26,7 @@ interface Disclaimer {
   content: string
 }
 
-export default function IntakePage() {
+function IntakeForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const returnEmail = searchParams.get('email') || ''
@@ -341,5 +341,13 @@ export default function IntakePage() {
         </form>
       </div>
     </div>
+  )
+}
+
+export default function IntakePage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <IntakeForm />
+    </Suspense>
   )
 }
