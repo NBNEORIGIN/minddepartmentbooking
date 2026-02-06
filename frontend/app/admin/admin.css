@@ -212,18 +212,25 @@
 .action-btn {
   background: #8B6F47;
   color: white;
-  border: none;
   padding: 8px 16px;
+  border: none;
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.9em;
-  font-weight: 500;
   transition: all 0.3s ease;
 }
 
 .action-btn:hover {
-  background: #A0826D;
+  background: #6d5636;
   transform: translateY(-2px);
+}
+
+.cancel-btn {
+  background: #dc3545 !important;
+}
+
+.cancel-btn:hover {
+  background: #c82333 !important;
 }
 
 .admin-footer {

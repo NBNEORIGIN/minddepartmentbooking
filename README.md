@@ -2,53 +2,48 @@
 
 A full-stack booking management system for salons, spas, and service businesses with Next.js frontend and Django backend.
 
-## 🎯 Overview
+## � Features
 
-This is a production-ready booking system featuring:
-- **Public Booking Page**: Compact, mobile-friendly booking interface
-- **Admin Dashboard**: Complete management system for bookings, staff, services, and schedules
-- **Schedule Management**: Business hours, staff schedules, closures, and time-off
-- **Client CRM**: GDPR-compliant client database with marketing consent tracking
-- **Email Notifications**: Automated booking confirmations via Resend API
+### Customer-Facing
+- **Real-time Availability**: Time slots automatically update based on existing bookings
+- **GDPR-Compliant Intake Forms**: Yearly auto-renewal with consent tracking
+- **Seamless Booking Flow**: Service → Staff → Date → Time → Details → Confirmation
+- **Email Confirmations**: Automatic booking confirmations via IONOS SMTP or Resend API
+- **Mobile Responsive**: Works perfectly on all devices
 
-## 📋 Tech Stack
+### Admin Features
+- **Booking Management**: View, filter, and cancel bookings
+- **Staff Management**: Add/edit staff members and their services
+- **Service Management**: Configure services, pricing, and durations
+- **Client Management**: Track customer information and booking history
+- **Disclaimer Management**: Edit disclaimer content with HTML support and version control
+- **Form Renewal Management**: Manually expire intake forms or trigger bulk renewals
+- **Real-time Dashboard**: Overview of bookings, revenue, and client activity
 
-**Frontend:**
-- Next.js 14 (App Router)
-- React 18
-- TypeScript
-- CSS Modules
-- date-fns for date handling
+### Technical Features
+- **Double Booking Prevention**: Backend validation prevents overlapping appointments
+- **Automatic Slot Management**: Cancelled bookings immediately free up time slots
+- **Intake Form Validation**: Blocks bookings until valid intake form is completed
+- **Session-based Availability**: 15-minute slot intervals with service duration awareness
+- **Timezone Aware**: All times stored and displayed with proper timezone handling
 
-**Backend:**
-- Django 5.2
-- Django REST Framework
-- PostgreSQL database
-- Resend for email delivery
-- WhiteNoise for static files
+## 🏗️ Tech Stack
 
-**Deployment:**
-- Vercel (Frontend)
-- Railway (Backend + PostgreSQL)
+### Frontend
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Styling**: Custom CSS with responsive design
+- **Date Handling**: date-fns
+- **Deployment**: Vercel
 
-## 🏗️ Project Structure
+### Backend
+- **Framework**: Django 5.2
+- **API**: Django REST Framework
+- **Database**: PostgreSQL 14+
+- **Email**: IONOS SMTP / Resend API
+- **Deployment**: Railway
 
-```
-booking-app/
-├── frontend/                 # Next.js application
-│   ├── app/
-│   │   ├── page.tsx         # Public booking page (compact layout)
-│   │   ├── admin/           # Admin dashboard
-│   │   │   ├── page.tsx     # Dashboard home
-│   │   │   ├── services/    # Service management
-│   │   │   ├── staff/       # Staff management
-│   │   │   ├── clients/     # Client CRM
-│   │   │   └── schedules/   # Schedule management
-│   │   ├── booking-compact.css
-│   │   └── admin.css
-│   ├── public/
-│   │   ├── logo.png         # Client logo
-│   │   └── scissors.png     # Service icon
+## 📋 Prerequisites
 │   └── package.json
 │
 ├── backend/                  # Django application
