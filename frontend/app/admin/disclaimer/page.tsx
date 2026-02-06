@@ -2,7 +2,12 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import '../admin.css'
+import 'react-quill/dist/quill.snow.css'
+
+// Dynamically import ReactQuill to avoid SSR issues
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8001/api'
 
@@ -192,12 +197,25 @@ export default function DisclaimerManagement() {
               </div>
               <div style={{ marginBottom: '20px' }}>
                 <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Content</label>
-                <textarea
-                  value={newContent}
-                  onChange={(e) => setNewContent(e.target.value)}
-                  rows={6}
-                  style={{ width: '100%', padding: '12px', borderRadius: '4px', border: '1px solid #ddd', fontFamily: 'inherit' }}
-                />
+                <div style={{ background: 'white', borderRadius: '4px', border: '1px solid #ddd' }}>
+                  <ReactQuill 
+                    theme="snow"
+                    value={newContent}
+                    onChange={setNewContent}
+                    modules={{
+                      toolbar: [
+                        [{ 'header': [2, 3, false] }],
+                        ['bold', 'italic', 'underline'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        ['clean']
+                      ]
+                    }}
+                    style={{ minHeight: '300px' }}
+                  />
+                </div>
+                <p style={{ fontSize: '0.85em', color: '#666', marginTop: '8px' }}>
+                  Use the toolbar to format text. Headings, bold, italic, and lists are available.
+                </p>
               </div>
               <div style={{ display: 'flex', gap: '10px' }}>
                 <button 
