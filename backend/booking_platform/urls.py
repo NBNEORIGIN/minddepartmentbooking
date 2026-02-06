@@ -30,6 +30,8 @@ router.register(r'business-hours', BusinessHoursViewSet)
 router.register(r'staff-schedules', StaffScheduleViewSet)
 router.register(r'closures', ClosureViewSet)
 router.register(r'staff-leave', StaffLeaveViewSet)
+router.register(r'intake', IntakeProfileViewSet)
+router.register(r'intake-disclaimer', IntakeWellbeingDisclaimerViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

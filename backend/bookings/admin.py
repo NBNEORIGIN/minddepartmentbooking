@@ -7,6 +7,7 @@ from django.db.models import Count, Q, Sum
 import csv
 from datetime import datetime, timedelta
 from .models import Service, Staff, Client, Booking, BusinessHours, StaffSchedule, Closure, StaffLeave, Session
+from .models_intake import IntakeProfile, IntakeWellbeingDisclaimer
 
 
 @admin.register(Service)
@@ -182,3 +183,39 @@ class StaffLeaveAdmin(admin.ModelAdmin):
     list_filter = ['staff', 'start_date']
     date_hierarchy = 'start_date'
     ordering = ['-start_date']
+
+
+@admin.register(IntakeProfile)
+class IntakeProfileAdmin(admin.ModelAdmin):
+    list_display = ['full_name', 'email', 'phone', 'completed', 'is_valid_for_booking', 'created_at']
+    list_filter = ['completed', 'consent_booking', 'consent_marketing', 'created_at']
+    search_fields = ['full_name', 'email', 'phone']
+    readonly_fields = ['created_at', 'updated_at', 'completed']
+    
+    fieldsets = (
+        ('Personal Information', {
+            'fields': ('full_name', 'email', 'phone')
+        }),
+        ('Emergency Contact', {
+            'fields': ('emergency_contact_name', 'emergency_contact_phone')
+        }),
+        ('Session Preferences', {
+            'fields': ('experience_level', 'goals', 'preferences'),
+            'classes': ('collapse',)
+        }),
+        ('Consent & Privacy', {
+            'fields': ('consent_booking', 'consent_marketing', 'consent_privacy')
+        }),
+        ('Metadata', {
+            'fields': ('completed', 'created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+
+
+@admin.register(IntakeWellbeingDisclaimer)
+class IntakeWellbeingDisclaimerAdmin(admin.ModelAdmin):
+    list_display = ['version', 'active', 'created_at']
+    list_filter = ['active', 'created_at']
+    search_fields = ['version', 'content']
+    readonly_fields = ['created_at']
