@@ -76,14 +76,45 @@ class IntakeProfileViewSet(viewsets.ModelViewSet):
         profile = get_object_or_404(IntakeProfile, email=email)
         serializer = self.get_serializer(profile)
         return Response(serializer.data)
+    
+    @action(detail=True, methods=['post'])
+    def expire(self, request, pk=None):
+        """
+        Manually expire a specific intake profile
+        POST /api/intake-profiles/{id}/expire/
+        """
+        profile = self.get_object()
+        from django.utils import timezone
+        profile.expires_at = timezone.now()
+        profile.save()
+        return Response({
+            'message': f'Intake form expired for {profile.full_name}',
+            'expired': True
+        })
+    
+    @action(detail=False, methods=['post'])
+    def expire_all(self, request):
+        """
+        Manually expire all intake profiles
+        POST /api/intake-profiles/expire-all/
+        """
+        from django.utils import timezone
+        count = IntakeProfile.objects.filter(completed=True).update(
+            expires_at=timezone.now()
+        )
+        return Response({
+            'message': f'Expired {count} intake forms',
+            'count': count
+        })
 
 
-class IntakeWellbeingDisclaimerViewSet(viewsets.ReadOnlyModelViewSet):
+class IntakeWellbeingDisclaimerViewSet(viewsets.ModelViewSet):
     """
-    ViewSet for Wellbeing Disclaimer (read-only for public)
+    ViewSet for Wellbeing Disclaimer
     
     Endpoints:
     - GET /api/intake-disclaimer/ - List disclaimers
+    - POST /api/intake-disclaimer/ - Create new disclaimer (admin)
     - GET /api/intake-disclaimer/active/ - Get active disclaimer
     """
     queryset = IntakeWellbeingDisclaimer.objects.all()

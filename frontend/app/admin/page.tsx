@@ -1,5 +1,5 @@
 'use client'
-// House of Hair Admin Dashboard
+// The Mind Department Admin Dashboard
 import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
 import Link from 'next/link'
@@ -105,8 +105,8 @@ export default function AdminDashboard() {
     <div className="admin-container">
       <div className="admin-header">
         <div className="header-content">
-          <img src="/logo.png" alt="House of Hair" className="admin-logo" />
-          <h1>House of Hair Management</h1>
+          <img src="/mind-department-logo.png" alt="The Mind Department" className="admin-logo" />
+          <h1>The Mind Department Management</h1>
         </div>
         <a href="/" className="view-site-btn">View Public Site</a>
       </div>
@@ -124,6 +124,9 @@ export default function AdminDashboard() {
           </Link>
           <Link href="/admin/clients" style={{ background: '#8B6F47', color: 'white', padding: '12px 24px', borderRadius: '8px', textDecoration: 'none', fontWeight: '500' }}>
             Client Database
+          </Link>
+          <Link href="/admin/disclaimer" style={{ background: '#2196F3', color: 'white', padding: '12px 24px', borderRadius: '8px', textDecoration: 'none', fontWeight: '500' }}>
+            Disclaimer & Intake Forms
           </Link>
           <button 
             onClick={exportToCSV}
@@ -250,7 +253,7 @@ export default function AdminDashboard() {
       </div>
 
       <div className="admin-footer">
-        <p>67 Bondgate Within, Alnwick, NE66 1HZ</p>
+        <p>The Mind Department</p>
       </div>
 
       {viewingBooking && (

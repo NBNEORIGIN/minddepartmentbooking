@@ -9,6 +9,7 @@ class IntakeProfileSerializer(serializers.ModelSerializer):
     """Serializer for IntakeProfile with validation"""
     
     is_valid_for_booking = serializers.SerializerMethodField()
+    is_expired = serializers.SerializerMethodField()
     
     class Meta:
         model = IntakeProfile
@@ -26,14 +27,20 @@ class IntakeProfileSerializer(serializers.ModelSerializer):
             'consent_marketing',
             'consent_privacy',
             'completed',
+            'completed_date',
+            'expires_at',
             'is_valid_for_booking',
+            'is_expired',
             'created_at',
             'updated_at',
         ]
-        read_only_fields = ['id', 'completed', 'created_at', 'updated_at', 'is_valid_for_booking']
+        read_only_fields = ['id', 'completed', 'completed_date', 'expires_at', 'created_at', 'updated_at', 'is_valid_for_booking', 'is_expired']
     
     def get_is_valid_for_booking(self, obj):
         return obj.is_valid_for_booking()
+    
+    def get_is_expired(self, obj):
+        return obj.is_expired()
     
     def validate_email(self, value):
         """Ensure email is unique for new profiles"""
