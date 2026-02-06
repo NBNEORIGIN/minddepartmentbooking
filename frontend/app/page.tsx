@@ -116,14 +116,17 @@ export default function CompactBookingPage() {
     return date >= today
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError('')
+
     if (!selectedService || !selectedStaff || !selectedDate || !selectedTime) {
-      setError('Please complete all booking steps')
+      setError('Please complete all booking details')
       return
     }
 
     if (!customerName || !customerEmail || !customerPhone) {
-      setError('Please fill in all customer details')
+      setError('Please fill in all contact details')
       return
     }
 
@@ -133,6 +136,20 @@ export default function CompactBookingPage() {
     }
 
     try {
+      // Check if customer has completed intake form
+      const intakeCheckRes = await fetch(`${API_BASE}/intake-profiles/status/?email=${encodeURIComponent(customerEmail)}`)
+      
+      if (intakeCheckRes.ok) {
+        const intakeStatus = await intakeCheckRes.json()
+        
+        if (!intakeStatus.is_valid_for_booking) {
+          // Redirect to intake form with email pre-filled
+          window.location.href = `/intake?email=${encodeURIComponent(customerEmail)}&return=booking`
+          return
+        }
+      }
+
+      // Intake form is valid, proceed with booking
       const bookingData = {
         service: selectedService.id,
         staff: selectedStaff.id,

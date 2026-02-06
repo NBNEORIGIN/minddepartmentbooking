@@ -30,6 +30,7 @@ function IntakeForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const returnEmail = searchParams.get('email') || ''
+  const returnTo = searchParams.get('return') || ''
 
   const [disclaimer, setDisclaimer] = useState<Disclaimer | null>(null)
   const [loading, setLoading] = useState(true)
@@ -109,8 +110,12 @@ function IntakeForm() {
         throw new Error(errorData.detail || 'Failed to submit intake form')
       }
 
-      // Success - redirect back to booking page
-      router.push(`/?email=${encodeURIComponent(formData.email)}`)
+      // Success - redirect back to booking page or home
+      if (returnTo === 'booking') {
+        router.push(`/?email=${encodeURIComponent(formData.email)}&intake_complete=true`)
+      } else {
+        router.push(`/?email=${encodeURIComponent(formData.email)}`)
+      }
     } catch (err: any) {
       setError(err.message || 'Failed to submit intake form. Please try again.')
       setSubmitting(false)
