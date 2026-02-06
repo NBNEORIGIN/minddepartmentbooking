@@ -45,6 +45,23 @@ export default function CompactBookingPage() {
 
   useEffect(() => {
     fetchData()
+    
+    // Pre-fill email if returning from intake form
+    const urlParams = new URLSearchParams(window.location.search)
+    const emailParam = urlParams.get('email')
+    const intakeComplete = urlParams.get('intake_complete')
+    
+    if (emailParam) {
+      setCustomerEmail(emailParam)
+      
+      if (intakeComplete === 'true') {
+        // Show success message
+        setError('')
+        setTimeout(() => {
+          alert('✅ Intake form completed! You can now proceed with your booking.')
+        }, 500)
+      }
+    }
   }, [])
 
   const fetchData = async () => {

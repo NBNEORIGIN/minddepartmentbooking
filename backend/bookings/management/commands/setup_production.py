@@ -27,16 +27,8 @@ class Command(BaseCommand):
         )
         self.stdout.write(self.style.SUCCESS(f'✓ {"Created" if created else "Found"} service: {service.name}'))
 
-        # Create Staff
-        staff, created = Staff.objects.get_or_create(
-            email='aly@theminddepartment.com',
-            defaults={
-                'name': 'Aly Harwood',
-                'phone': '07395812669',
-                'active': True
-            }
-        )
-        self.stdout.write(self.style.SUCCESS(f'✓ {"Created" if created else "Found"} staff: {staff.name}'))
+        # Staff members should be created manually via admin interface
+        self.stdout.write(self.style.SUCCESS('✓ Staff members managed via admin interface'))
 
         # Create Disclaimer
         disclaimer_content = """<h2>The Mind Department - Health & Wellness Consent and Liability Waiver</h2>
