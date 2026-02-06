@@ -120,17 +120,18 @@ class BookingViewSet(viewsets.ModelViewSet):
                         try:
                             print(f"[EMAIL] Starting email send to {client.email}")
                             
-                            # Use Resend HTTP API (Railway blocks SMTP, Resend is free)
-                            import resend
+                            # Try Resend first, fallback to SMTP
                             from django.conf import settings
-                            
                             resend_api_key = getattr(settings, 'RESEND_API_KEY', None)
                             
-                            if not resend_api_key:
-                                print(f"[EMAIL] Resend not configured, skipping email")
-                                return
+                            use_resend = resend_api_key and resend_api_key.strip()
                             
-                            resend.api_key = resend_api_key
+                            if use_resend:
+                                print(f"[EMAIL] Using Resend API")
+                                import resend
+                                resend.api_key = resend_api_key
+                            else:
+                                print(f"[EMAIL] Resend not configured, using SMTP")
                             
                             subject = f'Booking Confirmation - {service.name}'
                             message = f"""Dear {client.name},
@@ -152,18 +153,28 @@ If you need to cancel or reschedule, please contact us.
 Thank you,
 The Mind Department"""
                             
-                            # Use configured from address (must be from verified domain)
-                            from_email = getattr(settings, 'RESEND_FROM_EMAIL', 'onboarding@resend.dev')
-                            
-                            params = {
-                                "from": f"The Mind Department <{from_email}>",
-                                "to": [client.email],
-                                "subject": subject,
-                                "text": message
-                            }
-                            
-                            email = resend.Emails.send(params)
-                            print(f"[EMAIL] Successfully sent to {client.email}, ID: {email.get('id')}")
+                            if use_resend:
+                                # Use Resend API
+                                from_email = getattr(settings, 'RESEND_FROM_EMAIL', 'onboarding@resend.dev')
+                                params = {
+                                    "from": f"The Mind Department <{from_email}>",
+                                    "to": [client.email],
+                                    "subject": subject,
+                                    "text": message
+                                }
+                                email = resend.Emails.send(params)
+                                print(f"[EMAIL] Successfully sent via Resend to {client.email}, ID: {email.get('id')}")
+                            else:
+                                # Use Django SMTP
+                                from django.core.mail import send_mail
+                                send_mail(
+                                    subject=subject,
+                                    message=message,
+                                    from_email=settings.DEFAULT_FROM_EMAIL,
+                                    recipient_list=[client.email],
+                                    fail_silently=False,
+                                )
+                                print(f"[EMAIL] Successfully sent via SMTP to {client.email}")
                         except Exception as e:
                             print(f"[EMAIL] ERROR: {type(e).__name__}: {str(e)}")
                             import traceback
