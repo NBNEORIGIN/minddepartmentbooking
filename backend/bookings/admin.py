@@ -10,6 +10,11 @@ from .models import Service, Staff, Client, Booking, BusinessHours, StaffSchedul
 from .models_intake import IntakeProfile, IntakeWellbeingDisclaimer
 from .models_payment import ClassPackage, ClientCredit, PaymentTransaction
 
+# Customize admin site branding
+admin.site.site_header = "The Mind Department"
+admin.site.site_title = "The Mind Department Management"
+admin.site.index_title = "Welcome to The Mind Department Management"
+
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):

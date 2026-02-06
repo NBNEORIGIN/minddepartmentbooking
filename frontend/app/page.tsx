@@ -41,6 +41,7 @@ export default function CompactBookingPage() {
   const [consent, setConsent] = useState(false)
   
   const [bookingComplete, setBookingComplete] = useState(false)
+  const [currentMonth, setCurrentMonth] = useState(new Date())
 
   useEffect(() => {
     fetchData()
@@ -80,13 +81,39 @@ export default function CompactBookingPage() {
     return slots
   }
 
-  const generateDates = () => {
-    const dates = []
-    const today = new Date()
-    for (let i = 0; i < 14; i++) {
-      dates.push(addDays(today, i))
+  const getDaysInMonth = (date: Date) => {
+    const year = date.getFullYear()
+    const month = date.getMonth()
+    const firstDay = new Date(year, month, 1)
+    const lastDay = new Date(year, month + 1, 0)
+    const daysInMonth = lastDay.getDate()
+    const startingDayOfWeek = firstDay.getDay()
+    
+    const days: (Date | null)[] = []
+    
+    // Add empty slots for days before the first of the month
+    for (let i = 0; i < startingDayOfWeek; i++) {
+      days.push(null)
     }
-    return dates
+    
+    // Add all days in the month
+    for (let day = 1; day <= daysInMonth; day++) {
+      days.push(new Date(year, month, day))
+    }
+    
+    return days
+  }
+
+  const changeMonth = (direction: number) => {
+    const newMonth = new Date(currentMonth)
+    newMonth.setMonth(newMonth.getMonth() + direction)
+    setCurrentMonth(newMonth)
+  }
+
+  const isDateSelectable = (date: Date) => {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    return date >= today
   }
 
   const handleSubmit = async () => {
@@ -139,7 +166,7 @@ export default function CompactBookingPage() {
     return (
       <div className="booking-container">
         <div className="booking-header">
-          <h1>House of Hair</h1>
+          <h1>The Mind Department</h1>
           <p>Loading...</p>
         </div>
       </div>
@@ -153,7 +180,7 @@ export default function CompactBookingPage() {
           <h2>✓ Session Confirmed!</h2>
           <p>Your wellness session has been successfully booked.</p>
           <p><strong>Service:</strong> {selectedService?.name}</p>
-          <p><strong>Stylist:</strong> {selectedStaff?.name}</p>
+          <p><strong>Facilitator:</strong> {selectedStaff?.name}</p>
           <p><strong>Date:</strong> {selectedDate && format(selectedDate, 'EEEE, MMMM d, yyyy')}</p>
           <p><strong>Time:</strong> {selectedTime}</p>
           <p><strong>Total:</strong> £{selectedService?.price}</p>
@@ -168,7 +195,6 @@ export default function CompactBookingPage() {
   return (
     <div className="booking-container">
       <div className="booking-header">
-        <img src="/logo.png" alt="The Mind Department" style={{ height: '80px', marginBottom: '10px' }} />
         <h1>The Mind Department</h1>
         <p>Wellness Sessions - Book Your Experience</p>
       </div>
@@ -191,7 +217,7 @@ export default function CompactBookingPage() {
                 className={`compact-service-card ${selectedService?.id === service.id ? 'selected' : ''}`}
                 onClick={() => setSelectedService(service)}
               >
-                <img src="/scissors.png" alt="" style={{ width: '30px', height: '30px', marginBottom: '8px', opacity: 0.7 }} />
+                <div style={{ fontSize: '30px', marginBottom: '8px', opacity: 0.7 }}>🧘</div>
                 <h3>{service.name}</h3>
                 <div className="price">£{service.price}</div>
                 <div className="duration">{service.duration_minutes} min</div>
@@ -228,17 +254,36 @@ export default function CompactBookingPage() {
         {/* Date Selection */}
         <div className="booking-section">
           <h2>3. Choose Date</h2>
-          <div className="date-selector">
-            {generateDates().slice(0, 9).map((date) => (
-              <button
-                key={date.toISOString()}
-                className={`date-button ${selectedDate && format(selectedDate, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd') ? 'selected' : ''}`}
-                onClick={() => setSelectedDate(date)}
-              >
-                <div>{format(date, 'EEE')}</div>
-                <div>{format(date, 'd MMM')}</div>
-              </button>
-            ))}
+          <div className="calendar-container">
+            <div className="calendar-header">
+              <button onClick={() => changeMonth(-1)} className="calendar-nav">‹</button>
+              <h3>{format(currentMonth, 'MMMM yyyy')}</h3>
+              <button onClick={() => changeMonth(1)} className="calendar-nav">›</button>
+            </div>
+            <div className="calendar-weekdays">
+              {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+                <div key={day} className="calendar-weekday">{day}</div>
+              ))}
+            </div>
+            <div className="calendar-grid">
+              {getDaysInMonth(currentMonth).map((date, index) => {
+                if (!date) {
+                  return <div key={`empty-${index}`} className="calendar-day empty"></div>
+                }
+                const isSelectable = isDateSelectable(date)
+                const isSelected = selectedDate && format(selectedDate, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd')
+                return (
+                  <button
+                    key={date.toISOString()}
+                    className={`calendar-day ${isSelected ? 'selected' : ''} ${!isSelectable ? 'disabled' : ''}`}
+                    onClick={() => isSelectable && setSelectedDate(date)}
+                    disabled={!isSelectable}
+                  >
+                    {format(date, 'd')}
+                  </button>
+                )
+              })}
+            </div>
           </div>
         </div>
 
