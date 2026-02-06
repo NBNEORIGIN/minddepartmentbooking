@@ -2,14 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import dynamic from 'next/dynamic'
 import '../admin.css'
-
-// Dynamically import ReactQuill to avoid SSR issues
-const ReactQuill = dynamic(() => import('react-quill'), { 
-  ssr: false,
-  loading: () => <p>Loading editor...</p>
-})
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8001/api'
 
@@ -198,26 +191,39 @@ export default function DisclaimerManagement() {
                 />
               </div>
               <div style={{ marginBottom: '20px' }}>
-                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Content</label>
-                <div style={{ background: 'white', borderRadius: '4px', border: '1px solid #ddd' }}>
-                  <ReactQuill 
-                    theme="snow"
-                    value={newContent}
-                    onChange={setNewContent}
-                    modules={{
-                      toolbar: [
-                        [{ 'header': [2, 3, false] }],
-                        ['bold', 'italic', 'underline'],
-                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                        ['clean']
-                      ]
-                    }}
-                    style={{ minHeight: '300px' }}
-                  />
-                </div>
-                <p style={{ fontSize: '0.85em', color: '#666', marginTop: '8px' }}>
-                  Use the toolbar to format text. Headings, bold, italic, and lists are available.
-                </p>
+                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Content (HTML)</label>
+                <textarea
+                  value={newContent}
+                  onChange={(e) => setNewContent(e.target.value)}
+                  rows={20}
+                  style={{ 
+                    width: '100%', 
+                    padding: '12px', 
+                    borderRadius: '4px', 
+                    border: '1px solid #ddd', 
+                    fontFamily: 'monospace',
+                    fontSize: '13px',
+                    lineHeight: '1.6'
+                  }}
+                  placeholder="Enter HTML content here..."
+                />
+                <details style={{ marginTop: '10px', padding: '10px', background: '#f5f5f5', borderRadius: '4px' }}>
+                  <summary style={{ cursor: 'pointer', fontWeight: '500', color: '#8B6F47' }}>HTML Formatting Guide</summary>
+                  <div style={{ marginTop: '10px', fontSize: '0.9em', lineHeight: '1.8' }}>
+                    <p><strong>Headings:</strong></p>
+                    <code>&lt;h2&gt;Main Heading&lt;/h2&gt;</code><br/>
+                    <code>&lt;h3&gt;Sub Heading&lt;/h3&gt;</code>
+                    
+                    <p style={{ marginTop: '10px' }}><strong>Paragraphs:</strong></p>
+                    <code>&lt;p&gt;Your text here&lt;/p&gt;</code>
+                    
+                    <p style={{ marginTop: '10px' }}><strong>Bold text:</strong></p>
+                    <code>&lt;strong&gt;bold text&lt;/strong&gt;</code>
+                    
+                    <p style={{ marginTop: '10px' }}><strong>Lists:</strong></p>
+                    <code>&lt;ul&gt;&lt;li&gt;Item 1&lt;/li&gt;&lt;li&gt;Item 2&lt;/li&gt;&lt;/ul&gt;</code>
+                  </div>
+                </details>
               </div>
               <div style={{ display: 'flex', gap: '10px' }}>
                 <button 
