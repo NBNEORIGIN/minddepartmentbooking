@@ -154,16 +154,29 @@ export default function CompactBookingPage() {
 
     try {
       // Check if customer has completed intake form
+      console.log('Checking intake form status for:', customerEmail)
       const intakeCheckRes = await fetch(`${API_BASE}/intake-profiles/status/?email=${encodeURIComponent(customerEmail)}`)
+      
+      console.log('Intake check response status:', intakeCheckRes.status)
       
       if (intakeCheckRes.ok) {
         const intakeStatus = await intakeCheckRes.json()
+        console.log('Intake status:', intakeStatus)
         
         if (!intakeStatus.is_valid_for_booking) {
           // Redirect to intake form with email pre-filled
+          console.log('Redirecting to intake form - form not valid')
+          alert('Please complete the intake form before booking.')
           window.location.href = `/intake?email=${encodeURIComponent(customerEmail)}&return=booking`
           return
         }
+        console.log('Intake form is valid, proceeding with booking')
+      } else {
+        // If API fails or returns error, assume no intake form exists
+        console.log('Intake check failed, redirecting to intake form')
+        alert('Please complete the intake form before booking.')
+        window.location.href = `/intake?email=${encodeURIComponent(customerEmail)}&return=booking`
+        return
       }
 
       // Intake form is valid, proceed with booking
