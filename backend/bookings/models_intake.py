@@ -111,12 +111,11 @@ class IntakeProfile(models.Model):
             self.emergency_contact_name and self.emergency_contact_phone and
             self.consent_booking and self.consent_privacy):
             
-            # Mark as completed
-            if not self.completed:
-                self.completed = True
-                self.completed_date = timezone.now()
-                # Set expiry to 1 year from completion
-                self.expires_at = self.completed_date + timedelta(days=365)
+            # Mark as completed and update dates (even if already completed - for renewals)
+            self.completed = True
+            self.completed_date = timezone.now()
+            # Always set expiry to 1 year from now (for renewals)
+            self.expires_at = self.completed_date + timedelta(days=365)
         
         super().save(*args, **kwargs)
 
