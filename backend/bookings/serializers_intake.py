@@ -43,13 +43,16 @@ class IntakeProfileSerializer(serializers.ModelSerializer):
         return obj.is_expired()
     
     def validate_email(self, value):
-        """Ensure email is unique for new profiles, or allow update of existing"""
-        if self.instance is None:  # Creating new profile
-            # Check if profile exists - if so, we'll update it instead
-            existing = IntakeProfile.objects.filter(email=value).first()
-            if existing:
-                # Store the existing instance so we update instead of create
-                self.instance = existing
+        """Ensure email is unique for new profiles"""
+        # Skip validation if updating existing instance
+        if self.instance is not None:
+            return value
+            
+        # For new profiles, check if email already exists
+        if IntakeProfile.objects.filter(email=value).exists():
+            raise serializers.ValidationError(
+                "An intake profile with this email already exists. Please use a different email."
+            )
         return value
     
     def validate(self, data):

@@ -15,13 +15,29 @@ class IntakeProfileViewSet(viewsets.ModelViewSet):
     
     Endpoints:
     - GET /api/intake/ - List all profiles (admin)
-    - POST /api/intake/ - Create new profile
+    - POST /api/intake/ - Create new profile or update existing
     - GET /api/intake/{id}/ - Retrieve profile
     - PUT /api/intake/{id}/ - Update profile
     - GET /api/intake/status/?email=x - Check if email has completed intake
     """
     queryset = IntakeProfile.objects.all()
     serializer_class = IntakeProfileSerializer
+    
+    def create(self, request, *args, **kwargs):
+        """Create or update intake profile based on email"""
+        email = request.data.get('email')
+        if email:
+            # Check if profile exists
+            existing = IntakeProfile.objects.filter(email=email).first()
+            if existing:
+                # Update existing profile
+                serializer = self.get_serializer(existing, data=request.data)
+                serializer.is_valid(raise_exception=True)
+                self.perform_update(serializer)
+                return Response(serializer.data)
+        
+        # Create new profile
+        return super().create(request, *args, **kwargs)
     
     @action(detail=False, methods=['get'])
     def status(self, request):
