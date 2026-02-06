@@ -105,7 +105,7 @@ export default function AdminDashboard() {
     <div className="admin-container">
       <div className="admin-header">
         <div className="header-content">
-          <img src="/mind-department-logo.webp" alt="The Mind Department" className="admin-logo" />
+          <img src="/mind-department-logo.png" alt="The Mind Department" className="admin-logo" />
           <h1>The Mind Department Management</h1>
         </div>
         <a href="/" className="view-site-btn">View Public Site</a>
