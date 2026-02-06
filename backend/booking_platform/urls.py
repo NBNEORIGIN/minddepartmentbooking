@@ -20,6 +20,8 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from bookings.api_views import ServiceViewSet, StaffViewSet, BookingViewSet, ClientViewSet
 from bookings.views_schedule import BusinessHoursViewSet, StaffScheduleViewSet, ClosureViewSet, StaffLeaveViewSet
+from bookings.views_intake import IntakeProfileViewSet, IntakeWellbeingDisclaimerViewSet
+from bookings.views_payment import ClassPackageViewSet, ClientCreditViewSet, PaymentIntegrationViewSet
 
 router = DefaultRouter()
 router.register(r'services', ServiceViewSet)
@@ -32,9 +34,9 @@ router.register(r'closures', ClosureViewSet)
 router.register(r'staff-leave', StaffLeaveViewSet)
 router.register(r'intake', IntakeProfileViewSet)
 router.register(r'intake-disclaimer', IntakeWellbeingDisclaimerViewSet)
-router.register(r'class-packages', ClassPackageViewSet)
-router.register(r'client-credits', ClientCreditViewSet)
-router.register(r'payment-integrations', PaymentIntegrationViewSet)
+router.register(r'packages', ClassPackageViewSet)
+router.register(r'credits', ClientCreditViewSet)
+router.register(r'payment', PaymentIntegrationViewSet, basename='payment')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
