@@ -55,11 +55,8 @@ export default function CompactBookingPage() {
       setCustomerEmail(emailParam)
       
       if (intakeComplete === 'true') {
-        // Show success message
-        setError('')
-        setTimeout(() => {
-          alert('✅ Intake form completed! You can now proceed with your booking.')
-        }, 500)
+        // Clear URL params and show success in error field (will be green)
+        window.history.replaceState({}, '', '/')
       }
     }
   }, [])
