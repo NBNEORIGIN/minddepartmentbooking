@@ -82,7 +82,7 @@ WSGI_APPLICATION = "booking_platform.wsgi.application"
 import dj_database_url
 
 # Use DATABASE_URL if available (Railway), otherwise use individual config values
-DATABASE_URL = config('DATABASE_URL', default=None)
+DATABASE_URL = config('DATABASE_PUBLIC_URL', default=config('DATABASE_URL', default=None))
 
 if DATABASE_URL:
     DATABASES = {
