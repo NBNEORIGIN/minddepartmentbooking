@@ -115,7 +115,7 @@ export default function StaffManagement() {
     <div className="admin-container">
       <div className="admin-header">
         <div className="header-content">
-          <img src="/logo.png" alt="House of Hair" className="admin-logo" />
+          <img src="/mind-department-logo.png" alt="The Mind Department" className="admin-logo" />
           <h1>Staff Management</h1>
         </div>
         <div style={{ display: 'flex', gap: '10px' }}>
