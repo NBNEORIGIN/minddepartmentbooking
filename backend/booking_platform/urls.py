@@ -32,6 +32,9 @@ router.register(r'closures', ClosureViewSet)
 router.register(r'staff-leave', StaffLeaveViewSet)
 router.register(r'intake', IntakeProfileViewSet)
 router.register(r'intake-disclaimer', IntakeWellbeingDisclaimerViewSet)
+router.register(r'class-packages', ClassPackageViewSet)
+router.register(r'client-credits', ClientCreditViewSet)
+router.register(r'payment-integrations', PaymentIntegrationViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

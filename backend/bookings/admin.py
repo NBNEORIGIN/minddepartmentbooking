@@ -8,6 +8,7 @@ import csv
 from datetime import datetime, timedelta
 from .models import Service, Staff, Client, Booking, BusinessHours, StaffSchedule, Closure, StaffLeave, Session
 from .models_intake import IntakeProfile, IntakeWellbeingDisclaimer
+from .models_payment import ClassPackage, ClientCredit, PaymentTransaction
 
 
 @admin.register(Service)
@@ -219,3 +220,38 @@ class IntakeWellbeingDisclaimerAdmin(admin.ModelAdmin):
     list_filter = ['active', 'created_at']
     search_fields = ['version', 'content']
     readonly_fields = ['created_at']
+
+
+@admin.register(ClassPackage)
+class ClassPackageAdmin(admin.ModelAdmin):
+    list_display = ['name', 'class_count', 'price', 'price_per_class', 'validity_days', 'active', 'created_at']
+    list_filter = ['active', 'created_at']
+    search_fields = ['name', 'description']
+    readonly_fields = ['created_at', 'updated_at']
+    
+    def price_per_class(self, obj):
+        return f"£{obj.price_per_class:.2f}"
+    price_per_class.short_description = 'Price Per Class'
+
+
+@admin.register(ClientCredit)
+class ClientCreditAdmin(admin.ModelAdmin):
+    list_display = ['client', 'package', 'remaining_classes', 'total_classes', 'expires_at', 'is_valid', 'purchased_at']
+    list_filter = ['active', 'purchased_at', 'expires_at']
+    search_fields = ['client__name', 'client__email', 'payment_id']
+    readonly_fields = ['purchased_at', 'is_expired', 'is_valid']
+    date_hierarchy = 'purchased_at'
+    
+    def is_valid(self, obj):
+        return obj.is_valid
+    is_valid.boolean = True
+    is_valid.short_description = 'Valid'
+
+
+@admin.register(PaymentTransaction)
+class PaymentTransactionAdmin(admin.ModelAdmin):
+    list_display = ['client', 'transaction_type', 'amount', 'currency', 'status', 'payment_system_id', 'created_at']
+    list_filter = ['transaction_type', 'status', 'created_at']
+    search_fields = ['client__name', 'client__email', 'payment_system_id']
+    readonly_fields = ['created_at', 'updated_at']
+    date_hierarchy = 'created_at'

@@ -6,6 +6,9 @@ import threading
 # Import intake models
 from .models_intake import IntakeProfile, IntakeWellbeingDisclaimer
 
+# Import payment models
+from .models_payment import ClassPackage, ClientCredit, PaymentTransaction
+
 class Service(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
@@ -63,6 +66,20 @@ class Booking(models.Model):
         ('cancelled', 'Cancelled'),
         ('no_show', 'No Show'),
     ]
+    
+    PAYMENT_STATUS_CHOICES = [
+        ('pending', 'Payment Pending'),
+        ('paid', 'Paid'),
+        ('failed', 'Payment Failed'),
+        ('refunded', 'Refunded'),
+        ('credit_used', 'Credit Used'),
+    ]
+    
+    PAYMENT_TYPE_CHOICES = [
+        ('single_class', 'Single Class'),
+        ('package', 'Class Package'),
+        ('credit', 'Used Credit'),
+    ]
 
     client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='bookings')
     service = models.ForeignKey(Service, on_delete=models.PROTECT, related_name='bookings')
@@ -71,6 +88,33 @@ class Booking(models.Model):
     end_time = models.DateTimeField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     notes = models.TextField(blank=True)
+    
+    # Payment integration fields
+    payment_status = models.CharField(
+        max_length=20,
+        choices=PAYMENT_STATUS_CHOICES,
+        default='pending',
+        help_text='Payment status from payment system'
+    )
+    payment_id = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text='Payment reference ID from payment system'
+    )
+    payment_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text='Amount paid for this booking'
+    )
+    payment_type = models.CharField(
+        max_length=20,
+        choices=PAYMENT_TYPE_CHOICES,
+        default='single_class',
+        help_text='Type of payment used'
+    )
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

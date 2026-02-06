@@ -58,6 +58,16 @@ class IntakeProfile(models.Model):
         default=False,
         help_text='Intake form completed and validated'
     )
+    completed_date = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text='Date when questionnaire was completed'
+    )
+    expires_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text='Expiry date (1 year from completion) - must be renewed annually'
+    )
     
     class Meta:
         ordering = ['-created_at']
@@ -71,8 +81,15 @@ class IntakeProfile(models.Model):
     def __str__(self):
         return f"{self.full_name} ({self.email})"
     
+    def is_expired(self):
+        """Check if questionnaire has expired (older than 1 year)"""
+        if not self.expires_at:
+            return False
+        from django.utils import timezone
+        return timezone.now() > self.expires_at
+    
     def is_valid_for_booking(self):
-        """Check if intake is complete and consents are given"""
+        """Check if intake is complete, consents given, and not expired"""
         return (
             self.completed and
             self.consent_booking and
@@ -81,15 +98,26 @@ class IntakeProfile(models.Model):
             self.email and
             self.phone and
             self.emergency_contact_name and
-            self.emergency_contact_phone
+            self.emergency_contact_phone and
+            not self.is_expired()
         )
     
     def save(self, *args, **kwargs):
-        """Auto-mark as completed if all required fields present"""
+        """Auto-mark as completed if all required fields present and set expiry"""
+        from django.utils import timezone
+        from datetime import timedelta
+        
         if (self.full_name and self.email and self.phone and
             self.emergency_contact_name and self.emergency_contact_phone and
             self.consent_booking and self.consent_privacy):
-            self.completed = True
+            
+            # Mark as completed
+            if not self.completed:
+                self.completed = True
+                self.completed_date = timezone.now()
+                # Set expiry to 1 year from completion
+                self.expires_at = self.completed_date + timedelta(days=365)
+        
         super().save(*args, **kwargs)
 
 
